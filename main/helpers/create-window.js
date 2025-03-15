@@ -1,4 +1,4 @@
-import { screen, BrowserWindow } from 'electron'
+import { screen, BrowserWindow ,Menu} from 'electron'
 import Store from 'electron-store'
 
 export const createWindow = (windowName, options) => {
@@ -71,6 +71,8 @@ export const createWindow = (windowName, options) => {
       ...options.webPreferences,
     },
   })
+  
+ //  Menu.setApplicationMenu(null);   // this can remove all the menu like file,edit,view , etc...
 
   win.on('close', saveState)
 

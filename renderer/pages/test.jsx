@@ -11,14 +11,17 @@ export default function Login() {
 
     const router = useRouter();
     const [message, setMessage] = useState('');
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
 
 
     // ✅ Correct useEffect with async function inside
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/test");
-        setMessage(response.data.message);
+        const response = await axios.get("http://localhost:3000/api/employee");
+        setName(response.data.name);
+        setAge(response.data.age);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -45,7 +48,9 @@ export default function Login() {
       <Link 
       className="mt-6 text-blue-400"
       href="/home">test Link navigation</Link>
-      <p>{message}</p>
+
+      <p className='p-4'>Name : {name}</p>
+      <p className='p-4' >age : {age}</p>
       
       
       </React.Fragment>

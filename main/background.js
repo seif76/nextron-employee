@@ -8,6 +8,11 @@ import express from "express";
 import cors from "cors";
 //
 
+
+import employeeRouter from "./controllers/employeeController"
+
+
+
 const isProd = process.env.NODE_ENV === 'production'
 
 if (isProd) {
@@ -25,6 +30,8 @@ const startServer = () => {
   server.get("/api/test", (req, res) => {
     res.status(200).json({ message: "API is working!" });
   });
+
+  server.use("/api",employeeRouter)
 
   // Start Express Server
   const PORT = process.env.PORT || 3000;
