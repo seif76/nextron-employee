@@ -11,16 +11,49 @@ export default function Login() {
 
     const router = useRouter();
     const [message, setMessage] = useState('');
-    const [name, setName] = useState('');
+    //const [name, setName] = useState('');
     const [age, setAge] = useState('');
-
+    const [data, setdata] = useState([]);
+    const name = "John Doe";
+    const code = "E1233";
+    const hireDate = "2023-01-10";
+    const nationalId = "98765432103";
+    const phoneNumber = "0123456789";
+    const address = "456 Elm St";
+    const insuranceNumber = "INS567893";
+    const department = "HR";
+    const salary = 70000;
 
     // ✅ Correct useEffect with async function inside
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/employee");
-        setName(response.data.name);
+        const test = await axios.post(
+          "http://localhost:3000/api/add-employee", 
+          {}, // No body, since we are using query params
+          { 
+            params: {  // ✅ Send data in query parameters
+              name, 
+              code, 
+              hireDate, 
+              nationalId, 
+              phoneNumber, 
+              address, 
+              insuranceNumber, 
+              department, 
+              salary
+            },
+            headers: { "Content-Type": "application/json" }
+          }
+        )
+        .then((res) => {
+          alert(res.data);
+        })
+        .catch((error) => {
+          setMessage('Invalid email or password: ' + (error.response?.data?.message || error.message));
+        });
+        //setName(response.data.name);
         setAge(response.data.age);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,7 +83,9 @@ export default function Login() {
       href="/home">test Link navigation</Link>
 
       <p className='p-4'>Name : {name}</p>
-      <p className='p-4' >age : {age}</p>
+      <p className='p-4' >age : {salary}</p>
+      <p className='mt-6 text-red-500' >error message : {message}</p>
+      
       
       
       </React.Fragment>

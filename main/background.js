@@ -6,6 +6,7 @@ import { createWindow } from './helpers'
 //
 import express from "express";
 import cors from "cors";
+//import bodyParser from "body-parser";
 //
 
 
@@ -26,6 +27,7 @@ const startServer = () => {
   const server = express();
   server.use(cors());
   server.use(express.json());
+  //server.use(bodyParser.json());
   server.use(express.urlencoded({ extended: true }));
   server.get("/api/test", (req, res) => {
     res.status(200).json({ message: "API is working!" });
