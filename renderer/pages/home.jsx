@@ -51,6 +51,8 @@ export default function HomePage() {
         </button>
         <Link className='text-red-500 mx-4' href="/test">test Link navigation</Link>
         <p>{message}</p>
+
+        <Link className='text-yellow-500 mx-4' href="/employees">employees</Link>
       </div>
     </React.Fragment>
   )

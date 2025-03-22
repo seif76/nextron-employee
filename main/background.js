@@ -11,6 +11,8 @@ import cors from "cors";
 
 
 import employeeRouter from "./controllers/employeeController"
+import departmentRouter from "./controllers/departmentController"
+
 
 
 
@@ -34,6 +36,8 @@ const startServer = () => {
   });
 
   server.use("/api",employeeRouter)
+  server.use("/api",departmentRouter)
+  
 
   // Start Express Server
   const PORT = process.env.PORT || 3000;

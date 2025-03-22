@@ -10,4 +10,4 @@ const attendanceSchema = new mongoose.Schema({
   locationId: String,
 });
 
-module.exports = mongoose.model("Attendance", attendanceSchema);
+module.exports = mongoose.model("attendance", attendanceSchema);

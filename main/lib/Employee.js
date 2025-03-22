@@ -24,6 +24,10 @@ const EmployeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      required: true,
+    },
     address: {
       type: String,
       required: true,
@@ -43,7 +47,8 @@ const EmployeeSchema = new mongoose.Schema(
       default: "Active",
     },
     department: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "department", // ✅ Reference to the Department collection
       required: true,
     },
     salary: {
@@ -57,6 +62,6 @@ const EmployeeSchema = new mongoose.Schema(
 );
 
 
-const Employee = mongoose.model("Employee", EmployeeSchema);
+const Employee = mongoose.model("employee", EmployeeSchema);
 
 module.exports = Employee;
