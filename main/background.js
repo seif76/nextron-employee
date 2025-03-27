@@ -11,6 +11,8 @@ import cors from "cors";
 
 
 import employeeRouter from "./controllers/employeeController"
+import departmentRouter from "./controllers/departmentController"
+
 
 
 
@@ -34,6 +36,8 @@ const startServer = () => {
   });
 
   server.use("/api",employeeRouter)
+  server.use("/api",departmentRouter)
+  
 
   // Start Express Server
   const PORT = process.env.PORT || 3000;
@@ -58,10 +62,10 @@ startServer();
   })
 
   if (isProd) {
-    await mainWindow.loadURL('app://./home')
+    await mainWindow.loadURL('app://./employees')
   } else {
     const port = process.argv[2]
-    await mainWindow.loadURL(`http://localhost:${port}/home`)
+    await mainWindow.loadURL(`http://localhost:${port}/employees`)
     mainWindow.webContents.openDevTools()
   }
 })()
