@@ -21,17 +21,45 @@ router.post("/add-department", async (req, res) => {
     }
   });
 
-//   router.get("/get-departments", async (req, res) => {
-//     try {
+  router.get("/get-departments", async (req, res) => {
+    try {
       
-//       await connectToDataBase();    
-//       const items = await DepartmentModel.find({}).exec();
-//       res.status(200).json(items);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: "Error fetching items" });
-//     }
-//   });
+      await connectToDataBase();    
+      const items = await DepartmentModel.find({}).exec();
+      res.status(200).json(items);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching items" });
+    }
+  });
+
+
+  
+// ✅ Update department
+router.put("/update-department/:id", async (req, res) => {
+    try {
+      await connectToDataBase();
+      const updatedDept = await DepartmentModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      res.status(200).json(updatedDept);
+    } catch (error) {
+      res.status(500).json({ message: "Error updating department" });
+    }
+  });
+  
+  // ✅ Delete department
+  router.delete("/delete-department/:id", async (req, res) => {
+    try {
+      await connectToDataBase();
+      await DepartmentModel.findByIdAndDelete(req.params.id);
+      res.status(200).json({ message: "Department deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error deleting department" });
+    }
+  });
 
 router.get("/get-departments-with-count", async (req, res) => {
     try {

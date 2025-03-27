@@ -8,30 +8,59 @@ const router = express.Router();
 
 
 // Get All Employees with Pagination
+// router.get("/get-employees", async (req, res) => {
+//   try {
+//       await connectToDataBase();
+
+//       // Get query parameters (default: page 1, 10 employees per page)
+//       const page = parseInt(req.query.page) || 1;
+//       const limit = parseInt(req.query.limit) || 10;
+
+//       const skip = (page - 1) * limit;
+
+//       // Fetch employees with pagination
+//       const employees = await employeeModel.find({}).skip(skip).limit(limit).exec();
+//       const totalEmployees = await employeeModel.countDocuments(); // Get total count
+
+//       res.status(200).json({
+//           employees,
+//           totalPages: Math.ceil(totalEmployees / limit),
+//           currentPage: page
+//       });
+//   } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ message: "Error fetching employees" });
+//   }
+// });
+
+// Get Employees with Filters
 router.get("/get-employees", async (req, res) => {
   try {
-      await connectToDataBase();
+    await connectToDataBase();
 
-      // Get query parameters (default: page 1, 10 employees per page)
-      const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 10;
+    const { page = 1, limit = 10, departmentId, code, nationalId, phoneNumber } = req.query;
+    const skip = (page - 1) * limit;
+    let filter = {};
 
-      const skip = (page - 1) * limit;
+    if (departmentId) filter.department = departmentId;
+    if (code) filter.code = code;
+    if (nationalId) filter.nationalId = nationalId;
+    if (phoneNumber) filter.phoneNumber = phoneNumber;
 
-      // Fetch employees with pagination
-      const employees = await employeeModel.find({}).skip(skip).limit(limit).exec();
-      const totalEmployees = await employeeModel.countDocuments(); // Get total count
+    const employees = await employeeModel.find(filter).skip(skip).limit(limit).exec();
+    const totalEmployees = await employeeModel.countDocuments(filter);
 
-      res.status(200).json({
-          employees,
-          totalPages: Math.ceil(totalEmployees / limit),
-          currentPage: page
-      });
+    res.status(200).json({
+      employees,
+      totalPages: Math.ceil(totalEmployees / limit),
+      currentPage: parseInt(page),
+    });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error fetching employees" });
+    console.error(error);
+    res.status(500).json({ message: "Error fetching employees" });
   }
 });
+
 
 router.get("/employees/department/:departmentId", async (req, res) => {
   try {
@@ -163,21 +192,39 @@ router.post("/add-multiple-employees", async (req, res) => {
     res.status(500).json({ message: "❌ Internal Server Error", error: error.message });
   }
 });
+  // get employee by id
 
-  router.get("/employee/:id", async (req, res) => {
-    try {
-        await connectToDataBase(); // Ensure DB connection
-        const employee = await employeeModel.findById(req.params.id);
-        
-        if (!employee) {
-            return res.status(404).json({ message: "Employee not found" });
-        }
-        
-        res.status(200).json(employee);
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: "Error fetching employee", error });
+router.get("/employee/:id", async (req, res) => {
+  try {
+      await connectToDataBase(); // Ensure DB connection
+      const employee = await employeeModel.findById(req.params.id)
+          .populate("department", "name"); // ✅ Populate only the 'name' field of department
+      
+      if (!employee) {
+          return res.status(404).json({ message: "Employee not found" });
+      }
+
+      res.status(200).json(employee);
+  } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: "Error fetching employee", error });
+  }
+});
+// update single employee
+router.put("/update-employee/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedEmployee = await employeeModel.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedEmployee) {
+      return res.status(404).json({ message: "Employee not found" });
     }
+
+    res.status(200).json(updatedEmployee);
+  } catch (error) {
+    console.error("Error updating employee:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
     
 
