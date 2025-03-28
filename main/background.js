@@ -12,6 +12,7 @@ import cors from "cors";
 
 import employeeRouter from "./controllers/employeeController"
 import departmentRouter from "./controllers/departmentController"
+import attendanceRouter from "./controllers/attendanceController"
 
 
 
@@ -37,6 +38,8 @@ const startServer = () => {
 
   server.use("/api",employeeRouter)
   server.use("/api",departmentRouter)
+  server.use("/api",attendanceRouter)
+  
   
 
   // Start Express Server
