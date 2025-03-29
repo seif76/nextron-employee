@@ -10,6 +10,8 @@ export default function Navbar() {
        <Link className='pl-2' href="/employees"> <h1 className="text-xl font-bold hover:text-gray-600">Employees</h1></Link>
        <Link className='pl-4' href="/department"> <h1 className="text-xl font-bold hover:text-gray-600">Department</h1></Link>
        <Link className='pl-4' href="/attendance"> <h1 className="text-xl font-bold hover:text-gray-600">Attendance</h1></Link>
+       <Link className='pl-4' href="/absent"> <h1 className="text-xl font-bold hover:text-gray-600">Absent</h1></Link>
+
       </nav>
     );
   };
