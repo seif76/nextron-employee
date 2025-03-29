@@ -13,6 +13,7 @@ import cors from "cors";
 import employeeRouter from "./controllers/employeeController"
 import departmentRouter from "./controllers/departmentController"
 import attendanceRouter from "./controllers/attendanceController"
+import absentRouter from "./controllers/absentController"
 
 
 
@@ -39,6 +40,7 @@ const startServer = () => {
   server.use("/api",employeeRouter)
   server.use("/api",departmentRouter)
   server.use("/api",attendanceRouter)
+  server.use("/api",absentRouter)
   
   
 
