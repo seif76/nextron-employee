@@ -41,12 +41,12 @@ export default function AbsentUpload() {
   return (
     <>
       <Head>
-        <title>Absent Upload</title>
+        <title>Absent Upload - page</title>
       </Head>
 
       <Navbar />
 
-      <div className="bg-white shadow-md p-4 rounded-lg mb-4">
+      {/* <div className="bg-white shadow-md p-4 rounded-lg mb-4">
         <h3 className="text-lg font-semibold mb-2">📂 Upload Absence File</h3>
         <input type="file" accept=".xls,.xlsx" onChange={handleFileChange} className="mb-2" />
         <button 
@@ -57,7 +57,41 @@ export default function AbsentUpload() {
           {loading ? "Uploading..." : "Upload"}
         </button>
         {message && <p className="mt-2 text-sm text-gray-700">{message}</p>}
-      </div>
+      </div> */}
+
+<div className="flex justify-center items-center min-h-screen bg-gray-100">
+  <div className="bg-white shadow-lg rounded-lg p-6 w-96 text-center">
+    <h3 className="text-xl font-semibold mb-4 text-gray-800">📂 Upload Absence File</h3>
+
+    {/* File Upload Button */}
+    <label className="block w-full px-4 py-2 text-gray-600 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300">
+      Choose File
+      <input type="file" accept=".xls,.xlsx" onChange={handleFileChange} className="hidden" />
+    </label>
+
+    {/* Display Selected File Name */}
+    {file && <p className="mt-2 text-sm text-gray-600">📄 {file.name}</p>}
+
+    {/* Upload Button */}
+    <button 
+      disabled={loading} 
+      onClick={handleUpload} 
+      className={`w-full mt-4 px-4 py-2 text-white font-semibold rounded-md transition ${
+        loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+      }`}
+    >
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <svg className="animate-spin h-5 w-5 mr-2 border-2 border-white rounded-full border-t-transparent" viewBox="0 0 24 24"></svg>
+          Uploading...
+        </div>
+      ) : "Upload"}
+    </button>
+
+    {/* Message Feedback */}
+    {message && <p className="mt-3 text-sm text-gray-700">{message}</p>}
+  </div>
+</div>
     </>
   );
 }
