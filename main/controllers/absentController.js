@@ -3,6 +3,7 @@ import multer from "multer";
 import xlsx from "xlsx";
 import connectToDataBase from "../lib/mongodb.js";
 import AbsenceModel from "../lib/absent.js";
+import { deductSalary } from "../services/salaryService.js"; // ✅ Updated function reference
 
 const router = express.Router();
 
@@ -67,6 +68,8 @@ router.post("/absence/upload", upload.single("file"), async (req, res) => {
       console.log(`🟢 Inserting ${absentees.length} records into DB...`);
       await AbsenceModel.insertMany(absentees);
       console.log("✅ Data successfully inserted!");
+
+      await deductSalary(absentees); // ✅ Apply salary deductions
     } else {
       console.log("⚠️ No valid absence data found.");
     }
