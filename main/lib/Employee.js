@@ -51,10 +51,11 @@ const EmployeeSchema = new mongoose.Schema(
       ref: "department", // ✅ Reference to the Department collection
       required: true,
     },
-    salary: {
+    originalSalary: {
       type: Number,
       required: true,
     },
+    salary: { type: Number, required: true },
   },
   {
     timestamps: true, 

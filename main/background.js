@@ -6,6 +6,9 @@ import { createWindow } from './helpers'
 //
 import express from "express";
 import cors from "cors";
+import { resetSalaries } from "./services/salaryService.js";  // ✅ Import reset function
+
+//import "./services/salaryScheduler.js";
 //import bodyParser from "body-parser";
 //
 
@@ -42,8 +45,7 @@ const startServer = () => {
   server.use("/api",attendanceRouter)
   server.use("/api",absentRouter)
   
-  
-
+ 
   // Start Express Server
   const PORT = process.env.PORT || 3000;
   server.listen(PORT, () => {
@@ -57,6 +59,11 @@ startServer();
 
 ;(async () => {
   await app.whenReady()
+
+  console.log("🔄 Checking salary reset...");
+  await resetSalaries();  // ✅ Only call the function here
+  console.log("✅ Salary reset check completed.");
+
 
   const mainWindow = createWindow('main', {
     width: 1000,
