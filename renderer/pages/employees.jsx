@@ -123,19 +123,20 @@ import Sidebar from "../components/navigation/employee/sideBar";
 import Head from "next/head";
 import Navbar from "../components/navigation/navbar";
 import EmployeeFilter from "../components/employee/employeeFilter";
+import AddEmployee from "../components/employee/AddEmployee";
 import axios from "axios";
 
 export default function Employees() {
   const [departments, setDepartments] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [filters, setFilters] = useState({}); // Filters for search
+  const [filters, setFilters] = useState({});
+  const [showAddModal, setShowAddModal] = useState(false);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Fetch departments on mount
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -148,7 +149,6 @@ export default function Employees() {
     fetchDepartments();
   }, []);
 
-  // Fetch employees (with filtering & pagination)
   const fetchEmployees = async (departmentId = selectedDepartment, page = 1, filters = {}) => {
     try {
       const res = await axios.get("http://localhost:3000/api/get-employees", {
@@ -162,19 +162,16 @@ export default function Employees() {
     }
   };
 
-  // Handle department selection
   const handleDepartmentClick = (departmentId) => {
     setSelectedDepartment(departmentId);
     fetchEmployees(departmentId, 1, filters);
   };
 
-  // Handle search filtering
   const handleSearch = (newFilters) => {
     setFilters(newFilters);
     fetchEmployees(selectedDepartment, 1, newFilters);
   };
 
-  // Handle pagination
   const handlePageChange = (newPage) => {
     fetchEmployees(selectedDepartment, newPage, filters);
   };
@@ -193,7 +190,15 @@ export default function Employees() {
         </div>
 
         <div className="flex-1 p-6 overflow-auto">
-          <h1 className="text-2xl font-bold mb-4">Employees</h1>
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold">Employees</h1>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              + Add Employee
+            </button>
+          </div>
 
           <EmployeeFilter onSearch={handleSearch} />
 
@@ -230,6 +235,15 @@ export default function Employees() {
           )}
         </div>
       </div>
+
+      <AddEmployee
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          setShowAddModal(false);
+          fetchEmployees(selectedDepartment, currentPage, filters);
+        }}
+      />
     </>
   );
 }

@@ -17,7 +17,7 @@ import employeeRouter from "./controllers/employeeController"
 import departmentRouter from "./controllers/departmentController"
 import attendanceRouter from "./controllers/attendanceController"
 import absentRouter from "./controllers/absentController"
-
+import analticsRouter from "./controllers/analyticsController.js"
 
 
 
@@ -44,6 +44,7 @@ const startServer = () => {
   server.use("/api",departmentRouter)
   server.use("/api",attendanceRouter)
   server.use("/api",absentRouter)
+  server.use("/api",analticsRouter)
   
  
   // Start Express Server
