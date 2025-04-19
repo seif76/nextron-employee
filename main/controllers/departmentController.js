@@ -6,9 +6,6 @@ import employeeModel from "../lib/employee";
 const router = express.Router();
 
 
-
-
-
 router.post("/add-department", async (req, res) => {
     try {
       await connectToDataBase();
@@ -33,8 +30,6 @@ router.post("/add-department", async (req, res) => {
     }
   });
 
-
-  
 // ✅ Update department
 router.put("/update-department/:id", async (req, res) => {
     try {
