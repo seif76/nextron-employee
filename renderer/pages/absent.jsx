@@ -1,14 +1,43 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/navigation/navbar";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 export default function AbsentUpload() {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false); // 🔹 Added Loading State
-
+  const router = useRouter();
+  const [authinticate, setAuthinticate] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      axios.get('http://localhost:3000/api/auth/jwtAuth', {
+        headers: {
+          jwt: token
+        }
+      })
+      .then(response => {
+        if (response.data.authinticate) {
+          setAuthinticate(true);
+        } else {
+          setAuthinticate(false);
+          localStorage.removeItem("jwt");
+          router.push("/login");
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("jwt");
+        router.push("/login");
+        setAuthinticate(false);
+      });
+    } else {
+      //localStorage.removeItem("jwt");
+      router.push("/login");
+    }
+  }, []);
   // Handle File Selection
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -44,20 +73,12 @@ export default function AbsentUpload() {
         <title>Absent Upload - page</title>
       </Head>
 
-      <Navbar />
+      {authinticate ? (
+        <>
+         
+         <Navbar />
 
-      {/* <div className="bg-white shadow-md p-4 rounded-lg mb-4">
-        <h3 className="text-lg font-semibold mb-2">📂 Upload Absence File</h3>
-        <input type="file" accept=".xls,.xlsx" onChange={handleFileChange} className="mb-2" />
-        <button 
-          onClick={handleUpload} 
-          disabled={loading} // 🔹 Disable button while loading
-          className={`px-4 py-2 rounded-md text-white ${loading ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-600"}`}
-        >
-          {loading ? "Uploading..." : "Upload"}
-        </button>
-        {message && <p className="mt-2 text-sm text-gray-700">{message}</p>}
-      </div> */}
+     
 
 <div className="flex justify-center items-center min-h-screen bg-gray-100">
   <div className="bg-white shadow-lg rounded-lg p-6 w-96 text-center">
@@ -92,6 +113,10 @@ export default function AbsentUpload() {
     {message && <p className="mt-3 text-sm text-gray-700">{message}</p>}
   </div>
 </div>
+        </>
+      ) : null }
+
+     
     </>
   );
 }
