@@ -208,6 +208,7 @@ export default function Employees() {
     fetchEmployees(selectedDepartment, newPage, filters);
   };
 
+  
   return (
     <>
       <Head>
