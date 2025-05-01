@@ -18,6 +18,7 @@ import departmentRouter from "./controllers/departmentController"
 import attendanceRouter from "./controllers/attendanceController"
 import absentRouter from "./controllers/absentController"
 import analticsRouter from "./controllers/analyticsController.js"
+import authRouter from "./controllers/authController.js"
 
 
 
@@ -45,6 +46,8 @@ const startServer = () => {
   server.use("/api",attendanceRouter)
   server.use("/api",absentRouter)
   server.use("/api",analticsRouter)
+  server.use("/api/auth",authRouter)
+  
   
  
   // Start Express Server
@@ -75,10 +78,10 @@ startServer();
   })
 
   if (isProd) {
-    await mainWindow.loadURL('app://./employees')
+    await mainWindow.loadURL('app://./login')
   } else {
     const port = process.argv[2]
-    await mainWindow.loadURL(`http://localhost:${port}/employees`)
+    await mainWindow.loadURL(`http://localhost:${port}/login`)
     mainWindow.webContents.openDevTools()
   }
 })()
