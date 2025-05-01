@@ -49,7 +49,7 @@ export default function Login() {
         <div
           className="relative w-full lg:w-1/2 bg-blue-500 p-6 lg:p-10 flex flex-col justify-center items-center text-center rounded-b-[80px] lg:rounded-b-none lg:rounded-r-[80px]"
         >
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 lg:mb-6">Welcome to Your LMS </h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 lg:mb-6">Welcome To Shengda System </h2>
           
         </div>
   

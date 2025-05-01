@@ -82,4 +82,83 @@ router.post("/absence/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+router.get("/absence/by-date", async (req, res) => {
+  await connectToDataBase();
+  const { date } = req.query;
+
+  if (!date) return res.status(400).json({ message: "Date is required" });
+
+  const start = new Date(date);
+  const end = new Date(date);
+  end.setDate(end.getDate() + 1);
+
+  try {
+    const records = await AbsenceModel.find({
+      date: { $gte: start, $lt: end },
+    }).sort({ name: 1 });
+
+    res.json(records);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch absences" });
+  }
+});
+
 export default router;
+//===========================================
+
+router.get("/absence/by-month", async (req, res) => {
+  await connectToDataBase();
+  const { month } = req.query;
+
+  if (!month) return res.status(400).json({ message: "Month is required" });
+
+  try {
+    // Parse the month string (e.g. "2025-02")
+    const [year, monthIndex] = month.split("-").map(Number);
+
+    if (!year || !monthIndex) {
+      return res.status(400).json({ message: "Invalid month format" });
+    }
+
+    const startDate = new Date(year, monthIndex - 1, 1); // 1st of the month
+    const endDate = new Date(year, monthIndex, 1); // 1st of next month
+
+    // Fetch all absences within the selected month
+    const records = await AbsenceModel.find({
+      date: { $gte: startDate, $lt: endDate },
+    });
+
+    // Group absences by employee and collect absent dates
+    const grouped = {};
+
+    records.forEach((record) => {
+      const key = record.code + "_" + record.name;
+      const dateStr = record.date.toISOString().split("T")[0];
+
+      if (!grouped[key]) {
+        grouped[key] = {
+          code: record.code,
+          name: record.name,
+          absences: {},
+        };
+      }
+
+      grouped[key].absences[dateStr] = true;
+    });
+
+    // Generate all days of the month
+    const daysInMonth = new Date(year, monthIndex, 0).getDate();
+    const allDays = Array.from({ length: daysInMonth }, (_, i) => {
+      const day = i + 1;
+      const paddedDay = String(day).padStart(2, "0");
+      return `${year}-${String(monthIndex).padStart(2, "0")}-${paddedDay}`;
+    });
+
+    const employees = Object.values(grouped);
+
+    res.json({ days: allDays, employees });
+  } catch (error) {
+    console.error("❌ Error fetching monthly absences:", error);
+    res.status(500).json({ message: "Server error while fetching monthly data" });
+  }
+});
