@@ -55,13 +55,53 @@ const EmployeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    salary: { type: Number, required: true },
+    salary: { 
+      type: Number, 
+      required: true 
+    },
+
+    // ✅ New salary-related fields
+    allowance: {
+      type: Number,
+      default: 0,
+    },
+    bonuses: {
+      type: Number,
+      default: 0,
+    },
+    overtimeBonus: {
+      type: Number,
+      default: 0,
+    },
+    overtimeHours: {
+      type: Number,
+      default: 0,
+    },
+    incentives: {
+      type: Number,
+      default: 0,
+    },
+    tax: {
+      type: Number,
+      default: 0,
+    },
+    insuranceCost: {
+      type: Number,
+      default: 0,
+    },
+    latePenalty: {
+      type: Number,
+      default: 0,
+    },
+    advances: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true, 
   }
 );
-
 
 const Employee = mongoose.model("employee", EmployeeSchema);
 
