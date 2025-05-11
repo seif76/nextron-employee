@@ -12,8 +12,8 @@ dotenv.config(); // ✅ Make sure this is at the top!
 const isProd = process.env.NODE_ENV === 'production';
 
 const JWT_SECRET = isProd ? 'Sec_2025#7&9ad' : process.env.JWT_SECRET;
-const AdminEmail = isProd ? 'seif@gmail.com' : process.env.ADMIN_EMAIL;
-const AdminPass = isProd ? '123' : process.env.ADMIN_PASS;
+const AdminEmail = isProd ? 'm.samy@shengdaegypt.com' : process.env.ADMIN_EMAIL;
+const AdminPass = isProd ? 'Shengda@2025' : process.env.ADMIN_PASS;
 
 // const JWT_SECRET = process.env.JWT_SECRET;
 // const AdminEmail = process.env.ADMIN_EMAIL;

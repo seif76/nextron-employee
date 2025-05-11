@@ -14,9 +14,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
-const formatNumber = (num) => {
-  return num.toLocaleString();
-};
+const formatNumber = (num) => num.toLocaleString();
 
 const AnalyticsDashboard = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
@@ -31,6 +29,7 @@ const AnalyticsDashboard = () => {
           throw new Error("Failed to fetch analytics data");
         }
         const data = await response.json();
+        console.log("Analytics Data:", data); // Debugging
         setAnalyticsData(data);
       } catch (err) {
         setError(err.message);
@@ -45,7 +44,8 @@ const AnalyticsDashboard = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const { totalEmployees, totalDepartments, totalSalaries, departmentSalaries } = analyticsData;
+  const { totalEmployees = 0, totalDepartments = 0, departmentSalaries = [] } = analyticsData || {};
+  const totalSalaries = departmentSalaries.reduce((acc, dept) => acc + dept.totalSalary, 0);
 
   const barData = {
     labels: departmentSalaries.map((dept) => dept.departmentName),
