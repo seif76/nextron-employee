@@ -18,11 +18,11 @@ const EmployeeSchema = new mongoose.Schema(
     nationalId: {
       type: String,
       unique: true, 
-      required: true,
+      //required: true,
     },
     phoneNumber: {
       type: String,
-      required: true,
+      //required: true,
     },
     gender: {
       type: String,
