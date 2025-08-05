@@ -7,7 +7,7 @@ import { deductSalary } from "../services/salaryService.js"; // ✅ Updated func
 
 const router = express.Router();
 
-// 🟢 Use Memory Storage (No Need to Save File)
+// 🟢 Use Memory Storage (No Need to Save File new)
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
